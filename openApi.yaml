@@ -1,0 +1,249 @@
+openapi: 3.0.0
+paths:
+  /api/todos:
+    post:
+      operationId: createTodo
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTodoDto'
+      responses:
+        '200':
+          description: The created record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '400':
+          description: Invalid response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                        context:
+                          type: object
+                          properties:
+                            inputName:
+                              type: string
+      security: &ref_0
+        - bearer: []
+      summary: ''
+      tags: &ref_1
+        - todos
+    get:
+      operationId: getTodos
+      parameters: []
+      responses:
+        '200':
+          description: The found records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Todo'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: *ref_0
+      summary: ''
+      tags: *ref_1
+  /api/todos/{id}:
+    patch:
+      operationId: updateTodo
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTodoDto'
+      responses:
+        '200':
+          description: The created record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '400':
+          description: Invalid response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                        context:
+                          type: object
+                          properties:
+                            inputName:
+                              type: string
+      security: *ref_0
+      summary: ''
+      tags: *ref_1
+    get:
+      operationId: getTodo
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '201':
+          description: The found record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '400':
+          description: Invalid response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                        context:
+                          type: object
+                          properties:
+                            inputName:
+                              type: string
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                        context:
+                          type: object
+                          properties:
+                            inputName:
+                              type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: *ref_0
+      summary: ''
+      tags: *ref_1
+    delete:
+      operationId: deleteTodo
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      security: *ref_0
+      summary: ''
+      tags: *ref_1
+info:
+  title: Todos example
+  description: The todos API description
+  version: '1.0'
+  contact: {}
+tags:
+  - name: todos
+    description: ''
+servers: []
+components:
+  schemas:
+    CreateTodoDto:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+      required:
+        - name
+        - status
+    Todo:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+          description: The id of the todo task
+        name:
+          type: string
+          example: Get groceries
+          description: The name of the todo task
+        createdAt:
+          format: date-time
+          type: string
+          example: ''
+          description: The creation date of the todo task
+        updatedAt:
+          format: date-time
+          type: string
+          example: ''
+          description: The update date of the todo task
+        status:
+          type: string
+          example: ready_to_start
+          description: Status of the todo task
+          enum:
+            - done
+            - in_progress
+            - ready_to_start
+      required:
+        - id
+        - name
+        - createdAt
+        - updatedAt
+        - status
+    UpdateTodoDto:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          type: string

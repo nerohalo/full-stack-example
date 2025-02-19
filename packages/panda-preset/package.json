@@ -1,0 +1,27 @@
+{
+  "name": "panda-preset",
+  "version": "0.0.1",
+  "description": "type-safe panda preset to include radix colors and tokens",
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "sideEffects": false,
+  "files": [
+    "dist/**/*",
+    "src/**/*"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "clean": "rimraf dist .turbo node_modules .tsup",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@pandacss/dev": "^0.53.0"
+  },
+  "peerDependencies": {
+    "@pandacss/dev": "^0.53.0"
+  },
+  "dependencies": {
+    "@radix-ui/colors": "^3.0.0"
+  }
+}

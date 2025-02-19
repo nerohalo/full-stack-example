@@ -1,0 +1,19 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DefaultLayout > matches layout snapshot 1`] = `
+<div>
+  <div
+    class="radix-d_flex radix-flex-d_column radix-gap_10px radix-h_100%"
+  >
+    <div
+      data-testid="header"
+    >
+      Header
+    </div>
+    <div
+      class="radix-d_flex radix-flex-d_column radix-gap_10px radix-h_100% radix-pos_relative radix-ov-y_auto"
+      id="main-content"
+    />
+  </div>
+</div>
+`;

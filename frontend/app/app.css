@@ -1,0 +1,8 @@
+@layer reset, utilities, base, tokens, recipes;
+
+html, body {
+  font-family: "Montserrat", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}

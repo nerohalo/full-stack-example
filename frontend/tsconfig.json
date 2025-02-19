@@ -1,0 +1,27 @@
+{
+  "extends": "../tsconfig.base.json",
+  "include": [
+    "app",
+    "**/*",
+    "**/.server/**/*",
+    "**/.client/**/*",
+    ".react-router/types/**/*",
+    "vitest.setup.ts"
+  ],
+  "exclude": [
+    "build"
+  ],
+  "compilerOptions": {
+    "rootDirs": [".", "./.react-router/types"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./app/*"]
+    },
+    "types": [
+      "node",
+      "vite/client",
+      "vitest/globals",
+      "@testing-library/jest-dom"
+    ]
+  }
+}

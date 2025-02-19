@@ -1,0 +1,50 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+node_modules
+dist
+.idea
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+
+# yarn
+.yarn
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# turbo
+.turbo
+
+# tsup
+.tsup
+
+packages/styled-system/css
+packages/styled-system/jsx
+packages/styled-system/patterns
+packages/styled-system/recipes
+packages/styled-system/tokens
+packages/styled-system/types
+packages/styled-system/themes
+packages/styled-system/helpers.mjs
+
+## Panda
+#styled-system
+packages/*/styled-system
+packages/*/styled-system-studio

@@ -1,0 +1,27 @@
+{
+  "name": "context",
+  "version": "0.0.1",
+  "description": "type-safe react context abstraction",
+  "sideEffects": false,
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "files": [
+    "dist/**/*",
+    "src/**/*"
+  ],
+  "scripts": {
+    "build": "tsup --experimental-dts noExternals",
+    "clean": "rimraf dist .turbo node_modules .tsup",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@microsoft/api-extractor": "^7.50.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "peerDependencies": {
+    "react": "^19",
+    "react-dom": "^19"
+  }
+}
