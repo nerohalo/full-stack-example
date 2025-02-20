@@ -20,8 +20,8 @@ const TestComponent = () => {
         onClick={() =>
           showNotification(
             {
-              title: "Test Notification",
-              description: "This is a test notification.",
+              title: "Notification title",
+              description: "Notification description",
             },
             {
               autoClose: 3000,
@@ -75,16 +75,16 @@ describe("NotificationsProvider", () => {
     await user.click(showNotificationButton);
 
     expect(
-      await screen.findByText("Test Notification")
+      await screen.findByText("Notification title")
     ).toBeInTheDocument();
-    expect(screen.getByText("This is a test notification.")).toBeInTheDocument();
+    expect(screen.getByText("Notification description")).toBeInTheDocument();
 
     act(() => {
       vi.advanceTimersByTime(3000);
     });
 
     await waitFor(() => {
-      expect(screen.queryByText("Test Notification")).not.toBeInTheDocument();
+      expect(screen.queryByText("Notification title")).not.toBeInTheDocument();
     });
   });
 
@@ -99,12 +99,15 @@ describe("NotificationsProvider", () => {
     await user.click(showNotificationButton);
     await user.click(showNotificationButton);
 
-    expect(await screen.findAllByText("Test Notification")).toHaveLength(2);
+    expect(await screen.findAllByText("Notification title")).toHaveLength(2);
 
     const closeAllButton = screen.getByTestId("close-all-notifications");
     await user.click(closeAllButton);
 
-    expect(screen.queryByText("Test Notification")).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText("Notification title")).not.toBeInTheDocument();
+
+    });
   });
 
   it("pauses autoClose when notification is hovered and resumes on unhover", async() => {
@@ -117,7 +120,7 @@ describe("NotificationsProvider", () => {
     const showNotificationButton = screen.getByTestId("show-notification");
     await user.click(showNotificationButton);
 
-    const notification = await screen.findByText("Test Notification");
+    const notification = await screen.findByText("Notification title");
     screen.debug();
     expect(notification).toBeInTheDocument();
 
@@ -135,7 +138,7 @@ describe("NotificationsProvider", () => {
     });
 
     await waitFor(() => {
-      expect(screen.queryByText("Test Notification")).not.toBeInTheDocument();
+      expect(screen.queryByText("Notification title")).not.toBeInTheDocument();
     });
   });
 
@@ -172,7 +175,7 @@ describe("NotificationsProvider", () => {
     const showNotificationButton = screen.getByTestId("show-notification");
     await user.click(showNotificationButton);
 
-    const notification = await screen.findByText("Test Notification");
+    const notification = await screen.findByText("Notification title");
     expect(notification).toBeInTheDocument();
 
     act(() => {
