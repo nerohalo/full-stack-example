@@ -221,6 +221,70 @@ describe("TextField", () => {
       // Validate 'aria-invalid' attribute
       expect(inputElement).toHaveAttribute("aria-invalid", "true");
     });
+
+    it("should support description via aria attributes", () => {
+      render(
+        <TextField
+          label="Aria Descriptions"
+          description="This is a description"
+        />
+      );
+
+      // Retrieve the input element and description element from the DOM
+      const inputElement = screen.getByRole("textbox");
+      const descriptionElement = screen.getByText(/This is a description/i);
+
+      // Validate that the input has an aria-describedby attribute pointing to the description's ID
+      expect(inputElement).toHaveAttribute("aria-describedby", `${descriptionElement.id}`);
+    });
+
+    it("should support error messages via aria attributes", () => {
+      render(
+        <TextField
+          label="Aria Descriptions"
+          errorMessage="This is an error"
+        />
+      );
+
+      // Retrieve the input element and error message element from the DOM
+      const inputElement = screen.getByRole("textbox");
+      const errorMessageElement = screen.getByText(/This is an error/i);
+
+      // Validate that the input has an aria-describedby attribute pointing to the error message's ID
+      expect(inputElement).toHaveAttribute("aria-describedby", `${errorMessageElement.id}`);
+    });
+
+    it("should support warning messages via aria attributes", () => {
+      render(
+        <TextField
+          label="Aria Descriptions"
+          warningMessage="This is an warning"
+        />
+      );
+
+      // Retrieve the input element and warning message element from the DOM
+      const inputElement = screen.getByRole("textbox");
+      const waringMessageElement = screen.getByText(/This is an warning/i);
+
+      // Validate that the input has an aria-describedby attribute pointing to the warning message's ID
+      expect(inputElement).toHaveAttribute("aria-describedby", `${waringMessageElement.id}`);
+    });
+
+    it("should support success messages via aria attributes", () => {
+      render(
+        <TextField
+          label="Aria Descriptions"
+          successMessage="This is an success message"
+        />
+      );
+
+      // Retrieve the input element and success message element from the DOM
+      const inputElement = screen.getByRole("textbox");
+      const successMessageElement = screen.getByText(/This is an success message/i);
+
+      // Validate that the input has an aria-describedby attribute pointing to the success message's ID
+      expect(inputElement).toHaveAttribute("aria-describedby", `${successMessageElement.id}`);
+    });
   });
 
   describe("Edge Cases", () => {
