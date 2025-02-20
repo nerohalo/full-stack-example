@@ -1,20 +1,25 @@
 <h1 align="center">
-	Full stack framework agnostic monorepo template
+	Full stack BE framework agnostic monorepo template
 </h1>
 
-## Whats the purpose of this project?
+## What's the purpose of this project?
 
-NB! This code is not production ready. Use at your own risk!
+<strong>NB! This code is not production ready. Use at your own risk!</strong>
 
 I created this template for 2 reasons. To serve as a learning example and reusable template for future projects.
 
-The template allows to quickly get started with a monorepo full stack setup with a typesafe BE/FE
+The template allows to quickly get started with a monorepo full stack setup with a end-to-end typesafe experience
 
-Todo app was chosen as an example since it was easy to setup. This project is not meant to demonstrate the ability to build a Todo app!
+Todo app was chosen as an example since it was easy to set up.
+
+The project is supposed to demonstrate a solution that is fit for larger teams and allows for easy scalability in the long run.
+
+While the project has a node backend the solution will work with any backend technology as long as openapi schema is generated.
+
 
 ## Why pandaCSS over tailwind ?
 
-There are lots of reason why i prefer pandaCSS over tailwind
+There are lots of reason why I prefer pandaCSS over tailwind
 
 [Check out this link to learn more](https://www.perplexity.ai/search/create-a-detailed-summary-why-bWymfvygQ2K60ODCV6j3_Q)
 
@@ -40,6 +45,7 @@ There are lots of reason why i prefer pandaCSS over tailwind
 
 - Node version --lts
 - yarn
+- docker cli or docker desktop
 
 ```bash
 yarn install
@@ -65,7 +71,7 @@ yarn test
 - Implement all the variants for design system components
 - Improve accessibility and focusing logic
 - Make use of colorPalette in design system components
-- SSR does not fully work yet. Should make use of react router framework loaders
+- SSR does not fully work yet. Should make use of React router framework loaders
 - Revisit eslint config and rules.
 - Optimize production bundles
 - Add authentication and authorization
