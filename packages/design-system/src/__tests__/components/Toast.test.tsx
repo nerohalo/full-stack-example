@@ -1,18 +1,23 @@
-import { render, screen, fireEvent, act } from "@testing-library/react";
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { render, screen, act } from "@testing-library/react";
 import { ReactNode } from "react";
-import { describe, expect, test, vi, beforeEach, afterEach } from "vitest";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 
 import { Toast, type Props } from "../../components";
 import { NOTIFICATION_TIMEOUT } from "../../constants";
+import { user, setupStrictMode } from "../utils";
 
-vi.mock("@/components/Portal", () => ({
+// Mock the Portal component to simplify DOM testing by rendering its children directly
+vi.mock("../../components/Portal", () => ({
   Portal: ({ children }: { children: ReactNode }) => children,
 }));
 
-vi.mock("../Draggable", () => ({
+// Mock the Draggable component to disable drag-related functionality during tests
+vi.mock("../../components/Draggable", () => ({
   Draggable: ({ children }: { children: ReactNode }) => children,
 }));
 
+// Define the default props for the Toast component used in tests
 const defaultProps: Props = {
   id: "test-toast",
   content: {
@@ -30,87 +35,110 @@ const defaultProps: Props = {
 };
 
 describe("Toast Component", () => {
+  // Mocked callback for the `closeNotification` function
+  const closeNotificationCallback = vi.fn();
+
+  // Apply strict mode setup to test for React-specific issues (like side effects and warnings).
+  setupStrictMode();
+
+  // Before each test, set up fake timers for time manipulation
   beforeEach(() => {
     vi.useFakeTimers();
   });
 
+  // After each test, clear all mocks and restore real timers
   afterEach(() => {
     vi.clearAllMocks();
     vi.useRealTimers();
   });
 
-  test("renders basic content", () => {
+  it("renders basic content", () => {
     render(<Toast {...defaultProps} />);
+
+    // Validate the presence of title, description, and alert role
     expect(screen.getByText("Test Title")).toBeInTheDocument();
     expect(screen.getByText("Test Description")).toBeInTheDocument();
     expect(screen.getByRole("alert")).toBeInTheDocument();
   });
 
-  test("auto-closes after timeout", () => {
-    const closeNotification = vi.fn();
-    render(<Toast {...defaultProps} closeNotification={closeNotification} />);
+  it("auto-closes after timeout", () => {
+    render(<Toast {...defaultProps} closeNotification={closeNotificationCallback} />);
 
+    // Advance the timer to simulate the passage of time beyond the timeout
     act(() => {
       vi.advanceTimersByTime(NOTIFICATION_TIMEOUT + 100);
     });
 
-    expect(closeNotification).toHaveBeenCalledWith("test-toast");
+    // Verify that the closeNotification callback is triggered
+    expect(closeNotificationCallback).toHaveBeenCalledWith("test-toast");
   });
 
-  test("pauses timer on hover", () => {
-    const closeNotification = vi.fn();
-    render(<Toast {...defaultProps} closeNotification={closeNotification} />);
+  it("pauses timer on hover", async() => {
+    render(<Toast {...defaultProps} closeNotification={closeNotificationCallback} />);
 
     const toast = screen.getByRole("alert");
 
-    fireEvent.mouseEnter(toast);
+    // Simulate a hover event
+    await user.hover(toast);
+
+    // Advance the timer but ensure the closeNotification callback is not triggered
     act(() => {
       vi.advanceTimersByTime(NOTIFICATION_TIMEOUT - 100);
     });
-    expect(closeNotification).not.toHaveBeenCalled();
+    expect(closeNotificationCallback).not.toHaveBeenCalled();
 
-    fireEvent.mouseLeave(toast);
+    // Simulate the user stopping the hover
+    await user.unhover(toast);
 
+    // Advance the timer and verify the callback is now triggered
     act(() => {
       vi.advanceTimersByTime(200);
     });
-    expect(closeNotification).toHaveBeenCalledTimes(1);
+    expect(closeNotificationCallback).toHaveBeenCalled();
   });
 
-  test("closes on escape key", () => {
-    const closeNotification = vi.fn();
-    render(<Toast {...defaultProps} closeNotification={closeNotification} />);
+  it("closes on escape key", async() => {
+    render(<Toast {...defaultProps} closeNotification={closeNotificationCallback} />);
 
-    fireEvent.keyDown(screen.getByRole("alert"), { key: "Escape" });
-    expect(closeNotification).toHaveBeenCalledWith("test-toast");
+    // Focus on the parent element of the Toast and simulate an Escape key press
+    screen.getByRole("alert").parentElement!.focus();
+    await user.keyboard("{Escape}");
+
+    // Verify that the closeNotification callback is triggered
+    expect(closeNotificationCallback).toHaveBeenCalledWith("test-toast");
   });
 
-  test("shows progress bar when enabled", () => {
+  it("shows progress bar when enabled", () => {
     render(<Toast {...defaultProps} />);
+
+    // Check if the progress bar element is present
     expect(screen.getByRole("progressbar")).toBeInTheDocument();
   });
 
-  test("hides progress bar when disabled", () => {
+  it("hides progress bar when disabled", () => {
+    // Override props to disable the progress bar
     const props = {
       ...defaultProps,
-      options: {
-        ...defaultProps.options,
-        hideProgressBar: true,
-      },
+      options: { ...defaultProps.options, hideProgressBar: true },
     };
     render(<Toast {...props} />);
+
+    // Verify the absence of the progress bar element
     expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
   });
 
-  test("closes when close button clicked", () => {
-    const closeNotification = vi.fn();
-    render(<Toast {...defaultProps} closeNotification={closeNotification} />);
+  it("closes when close button clicked", async() => {
+    render(<Toast {...defaultProps} closeNotification={closeNotificationCallback} />);
 
-    fireEvent.click(screen.getByRole("button", { name: /close/i }));
-    expect(closeNotification).toHaveBeenCalledWith("test-toast");
+    // Simulate a click event on the close button
+    await user.click(screen.getByRole("button", { name: /close/i }));
+
+    // Verify that the closeNotification callback is triggered
+    expect(closeNotificationCallback).toHaveBeenCalledWith("test-toast");
   });
 
-  test("renders custom content", () => {
+  it("renders custom content", () => {
+    // Override props to add custom content
     const props = {
       ...defaultProps,
       content: {
@@ -119,24 +147,25 @@ describe("Toast Component", () => {
       },
     };
     render(<Toast {...props} />);
+
+    // Verify the presence of the custom content
     expect(screen.getByTestId("custom-content")).toBeInTheDocument();
   });
 
-  test("does not auto-close when autoClose is false", () => {
+  it("does not auto-close when autoClose is false", () => {
+    // Override props to disable auto-close
     const props = {
       ...defaultProps,
-      options: {
-        ...defaultProps.options,
-        autoClose: false,
-      },
+      options: { ...defaultProps.options, autoClose: false },
     };
-    const closeNotification = vi.fn();
-    render(<Toast {...props} closeNotification={closeNotification} />);
+    render(<Toast {...props} closeNotification={closeNotificationCallback} />);
 
+    // Advance the timer beyond the usual timeout period
     act(() => {
       vi.advanceTimersByTime(NOTIFICATION_TIMEOUT * 2);
     });
 
-    expect(closeNotification).not.toHaveBeenCalled();
+    // Verify that the callback is not triggered
+    expect(closeNotificationCallback).not.toHaveBeenCalled();
   });
 });
