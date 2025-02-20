@@ -63,6 +63,11 @@ yarn start
 yarn test
 ```
 
+To generate types, react queries and mocks from openapi schema
+```bash
+yarn orval
+```
+
 ## Next steps
 
 - More test coverage and refactor existing tests
