@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { describe, it, vi, expect, beforeEach } from "vitest";
 
 import { useDialogs, DialogsProvider } from "../../providers";
+import { user } from "../utils";
 
 const TestComponent = () => {
   const { showDialog, closeDialog, name } = useDialogs();
@@ -44,7 +44,6 @@ describe("DialogProvider", () => {
   });
 
   it("shows a dialog", async() => {
-    const user = userEvent.setup();
 
     render(
       <DialogsProvider>
@@ -59,7 +58,6 @@ describe("DialogProvider", () => {
   });
 
   it("closes a dialog and clears state correctly", async() => {
-    const user = userEvent.setup();
 
     render(
       <DialogsProvider>
@@ -78,7 +76,6 @@ describe("DialogProvider", () => {
   });
 
   it("calls the closeCallback when closing the dialog", async() => {
-    const user = userEvent.setup();
     const mockCloseCallback = vi.fn();
 
     const TestComponentWithCallback = () => {

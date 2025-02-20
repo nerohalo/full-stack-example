@@ -1,9 +1,9 @@
 import { act, render, screen, waitFor, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { Fragment, ReactNode } from "react";
 import { describe, it, vi, expect, beforeEach } from "vitest";
 
 import { NotificationsProvider, useNotification } from "../../providers";
+import { user } from "../utils";
 
 vi.mock("../../components/Draggable", () => ({
   Draggable: ({ children }: { children: ReactNode }) => <Fragment>{children}</Fragment>,
@@ -65,8 +65,6 @@ describe("NotificationsProvider", () => {
   });
 
   it("renders a notification and removes it after timeout", async() => {
-    const user = userEvent.setup();
-
     render(
       <NotificationsProvider>
         <TestComponent />
@@ -91,8 +89,6 @@ describe("NotificationsProvider", () => {
   });
 
   it("closes all notifications when closeAllNotifications is called", async() => {
-    const user = userEvent.setup();
-
     render(
       <NotificationsProvider>
         <TestComponent />
@@ -112,8 +108,6 @@ describe("NotificationsProvider", () => {
   });
 
   it("pauses autoClose when notification is hovered and resumes on unhover", async() => {
-    const user = userEvent.setup();
-
     render(
       <NotificationsProvider>
         <TestComponent />
@@ -146,8 +140,6 @@ describe("NotificationsProvider", () => {
   });
 
   it("adds notifications with `newestOnTop` set and ensures correct order", async() => {
-    const user = userEvent.setup();
-
     render(
       <NotificationsProvider config={{ newestOnTop: true }}>
         <TestComponent />
@@ -171,8 +163,6 @@ describe("NotificationsProvider", () => {
   });
 
   it("handles `autoClose=false` notifications and keeps them open", async() => {
-    const user = userEvent.setup();
-
     render(
       <NotificationsProvider config={{ autoClose: false }}>
         <TestComponent />
