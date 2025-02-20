@@ -43,11 +43,13 @@ There are lots of reason why I prefer pandaCSS over tailwind
 
 ### Prerequisites
 
-- Node version --lts
-- yarn
+- Node version 20+
+- yarn version 4+
 - docker cli or docker desktop
 
 ```bash
+corepack enable
+
 yarn install
 ```
 ```bash
