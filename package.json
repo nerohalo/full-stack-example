@@ -19,8 +19,6 @@
     "typecheck": "turbo typecheck",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:watch": "jest --watch",
-    "test:update": "jest --updateSnapshot",
     "prepare": "husky"
   },
   "devDependencies": {
