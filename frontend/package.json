@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "prepare": "panda codegen",
-    "build": "react-router build && yarn postbuild",
-    "postbuild": "purgecss --css build/client/assets/*.css --content build/client/index.html build/client/assets/*.js --output build/client/assets",
+    "build": "react-router build",
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
