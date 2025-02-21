@@ -2,7 +2,7 @@ import { css } from "@css/styled-system/css";
 
 export const container = css({
   display: "flex",
-  zIndex: "max",
+  zIndex: "sticky",
   position: "sticky",
   top: 0,
   alignItems: "center",
